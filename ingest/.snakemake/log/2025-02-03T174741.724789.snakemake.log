@@ -1,0 +1,41 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+all                    1
+extend_metadata        1
+metadata               1
+nextclade              1
+total                  4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Feb  3 17:47:42 2025]
+localrule nextclade:
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    jobid: 8
+    reason: Missing output files: data/references/nextclade.tsv
+    resources: tmpdir=/tmp
+
+[Mon Feb  3 17:47:42 2025]
+Error in rule nextclade:
+    jobid: 8
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    shell:
+        
+        nextclade3 run -D data/references/  -j 1                           --output-columns-selection seqName clade qc.overallScore qc.overallStatus alignmentScore  alignmentStart  alignmentEnd  coverage dynamic                           --output-tsv data/references/nextclade.tsv                           data/sequences.fasta
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-02-03T174741.724789.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,7 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingInputException in rule concat_geolocation_rules in file /mnt/c/Users/msomno/Documents/GitHub/Seasonal_Coronaviruses/ingest/workflow/snakemake_rules/curate.smk, line 31:
+Missing input files for rule concat_geolocation_rules:
+    output: data/all-geolocation-rules.tsv
+    affected files:
+        defaults/geolocation_rules.tsv

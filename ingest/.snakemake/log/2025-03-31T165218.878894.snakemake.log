@@ -1,0 +1,56 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 9
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+all                    1
+extend_metadata        1
+nextclade              1
+total                  3
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:52:19 2025]
+localrule nextclade:
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    jobid: 8
+    reason: Missing output files: data/references/nextclade.tsv
+    threads: 8
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:52:21 2025]
+Finished job 8.
+1 of 3 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:52:21 2025]
+localrule extend_metadata:
+    input: data/references/nextclade.tsv, data/metadata_raw.tsv
+    output: data/metadata.tsv
+    jobid: 7
+    reason: Missing output files: data/metadata.tsv; Input files updated by another job: data/references/nextclade.tsv
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:52:22 2025]
+Finished job 7.
+2 of 3 steps (67%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:52:22 2025]
+localrule all:
+    input: data/sequences.fasta, data/metadata.tsv
+    jobid: 0
+    reason: Input files updated by another job: data/metadata.tsv
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:52:22 2025]
+Finished job 0.
+3 of 3 steps (100%) done
+Complete log: .snakemake/log/2025-03-31T165218.878894.snakemake.log

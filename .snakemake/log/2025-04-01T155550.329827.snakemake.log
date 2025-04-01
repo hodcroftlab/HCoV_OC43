@@ -1,0 +1,22 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 9
+Rules claiming more threads will be scaled down.
+Job stats:
+job       count
+------  -------
+traits        1
+total         1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Apr  1 15:55:50 2025]
+Job 0: Inferring ancestral traits for country
+Reason: Missing output files: nucleocapsid/results/traits.json
+
+[Tue Apr  1 15:55:55 2025]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2025-04-01T155550.329827.snakemake.log

@@ -1,0 +1,7 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingInputException in rule nextclade in file /mnt/c/Users/msomno/Documents/GitHub/Bat_CoVs/ingest/workflow/snakemake_rules/sort.smk, line 36:
+Missing input files for rule nextclade:
+    output: data/references/nextclade.tsv
+    affected files:
+        data/references/reference.fasta

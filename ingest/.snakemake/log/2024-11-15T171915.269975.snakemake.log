@@ -1,0 +1,65 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                                count
+-------------------------------  -------
+all                                    1
+concat_geolocation_rules               1
+curate                                 1
+extend_metadata                        1
+extract_ncbi_dataset_sequences         1
+fetch_general_geolocation_rules        1
+fetch_ncbi_dataset_package             1
+format_ncbi_dataset_report             1
+format_ncbi_datasets_ndjson            1
+metadata                               1
+nextclade                              1
+sort                                   1
+total                                 12
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov 15 17:19:15 2024]
+localrule fetch_general_geolocation_rules:
+    output: data/general-geolocation-rules.tsv
+    jobid: 8
+    reason: Missing output files: data/general-geolocation-rules.tsv
+    resources: tmpdir=/tmp
+
+[Fri Nov 15 17:19:16 2024]
+Finished job 8.
+1 of 12 steps (8%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov 15 17:19:16 2024]
+localrule concat_geolocation_rules:
+    input: data/general-geolocation-rules.tsv, source-data/geolocation-rules.tsv
+    output: data/all-geolocation-rules.tsv
+    jobid: 7
+    reason: Missing output files: data/all-geolocation-rules.tsv; Input files updated by another job: data/general-geolocation-rules.tsv
+    resources: tmpdir=/tmp
+
+[Fri Nov 15 17:19:16 2024]
+Finished job 7.
+2 of 12 steps (17%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Nov 15 17:19:16 2024]
+localrule fetch_ncbi_dataset_package:
+    output: data/ncbi_dataset.zip
+    jobid: 5
+    benchmark: benchmarks/fetch_ncbi_dataset_package.txt
+    reason: Missing output files: data/ncbi_dataset.zip
+    resources: tmpdir=/tmp
+
+RuleException in rule fetch_ncbi_dataset_package in file /mnt/c/Users/msomno/Documents/GitHub/Bat_CoVs/ingest/workflow/snakemake_rules/fetch_from_ncbi.smk, line 39:
+AttributeError: 'Params' object has no attribute 'ncbi_accessions', when formatting the following:
+
+        datasets download virus genome accession --inputfile {params.ncbi_accessions:q}             --no-progressbar             --filename {output.dataset_package}
+        

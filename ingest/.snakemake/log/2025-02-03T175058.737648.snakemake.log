@@ -1,0 +1,69 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+all                    1
+extend_metadata        1
+metadata               1
+nextclade              1
+total                  4
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Feb  3 17:50:59 2025]
+localrule nextclade:
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    jobid: 8
+    reason: Missing output files: data/references/nextclade.tsv
+    resources: tmpdir=/tmp
+
+[Mon Feb  3 17:51:04 2025]
+Finished job 8.
+1 of 4 steps (25%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Feb  3 17:51:04 2025]
+localrule metadata:
+    input: data/trans_metadata.tsv, data/sequences.fasta
+    output: data/metadata_raw.tsv
+    jobid: 9
+    reason: Missing output files: data/metadata_raw.tsv
+    resources: tmpdir=/tmp
+
+[Mon Feb  3 17:51:05 2025]
+Finished job 9.
+2 of 4 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Feb  3 17:51:05 2025]
+localrule extend_metadata:
+    input: data/references/nextclade.tsv, data/metadata_raw.tsv
+    output: data/metadata.tsv
+    jobid: 7
+    reason: Missing output files: data/metadata.tsv; Input files updated by another job: data/metadata_raw.tsv, data/references/nextclade.tsv
+    resources: tmpdir=/tmp
+
+[Mon Feb  3 17:51:05 2025]
+Error in rule extend_metadata:
+    jobid: 7
+    input: data/references/nextclade.tsv, data/metadata_raw.tsv
+    output: data/metadata.tsv
+    shell:
+        
+        python3 bin/extend-metadata.py --metadata data/metadata_raw.tsv                                        --id-field accession                                        --nextclade data/references/nextclade.tsv                                        --output data/metadata.tsv
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-02-03T175058.737648.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

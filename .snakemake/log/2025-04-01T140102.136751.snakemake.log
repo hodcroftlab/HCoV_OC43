@@ -1,0 +1,10 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingInputException in rule all in file /mnt/c/Users/msomno/Documents/GitHub/HCoV_OC43/Snakefile, line 17:
+Missing input files for rule all:
+    affected files:
+        auspice/HCoV__OC43_whole_genome-accession.json
+        auspice/HCoV__OC43_membrane-accession.json
+        auspice/HCoV__OC43_spike-accession.json
+        auspice/HCoV__OC43_nucleocapsid-accession.json
+        auspice/HCoV__OC43_envelope-accession.json

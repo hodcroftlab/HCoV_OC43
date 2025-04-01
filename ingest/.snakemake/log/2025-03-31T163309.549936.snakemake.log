@@ -1,0 +1,151 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 9
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+curate                                1
+extend_metadata                       1
+extract_ncbi_dataset_sequences        1
+fetch_ncbi_dataset_package            1
+format_ncbi_dataset_report            1
+format_ncbi_datasets_ndjson           1
+metadata                              1
+nextclade                             1
+sort                                  1
+total                                10
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:33:09 2025]
+localrule fetch_ncbi_dataset_package:
+    output: data/ncbi_dataset.zip
+    jobid: 5
+    benchmark: benchmarks/fetch_ncbi_dataset_package.txt
+    reason: Missing output files: data/ncbi_dataset.zip; Params have changed since last execution
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:13 2025]
+Finished job 5.
+1 of 10 steps (10%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Mon Mar 31 16:33:13 2025]
+localrule format_ncbi_dataset_report:
+    input: data/ncbi_dataset.zip
+    output: data/ncbi_dataset_report.tsv
+    jobid: 6
+    benchmark: benchmarks/format_ncbi_dataset_report.txt
+    reason: Missing output files: data/ncbi_dataset_report.tsv; Input files updated by another job: data/ncbi_dataset.zip
+    resources: tmpdir=/tmp
+
+
+[Mon Mar 31 16:33:13 2025]
+localrule extract_ncbi_dataset_sequences:
+    input: data/ncbi_dataset.zip
+    output: data/ncbi_dataset_sequences.fasta
+    jobid: 4
+    benchmark: benchmarks/extract_ncbi_dataset_sequences.txt
+    reason: Missing output files: data/ncbi_dataset_sequences.fasta; Input files updated by another job: data/ncbi_dataset.zip
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:13 2025]
+Finished job 6.
+2 of 10 steps (20%) done
+[Mon Mar 31 16:33:13 2025]
+Finished job 4.
+3 of 10 steps (30%) done
+Removing temporary output data/ncbi_dataset.zip.
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:33:13 2025]
+localrule format_ncbi_datasets_ndjson:
+    input: data/ncbi_dataset_sequences.fasta, data/ncbi_dataset_report.tsv
+    output: data/ncbi.ndjson
+    log: logs/format_ncbi_datasets_ndjson.txt
+    jobid: 3
+    benchmark: benchmarks/format_ncbi_datasets_ndjson.txt
+    reason: Missing output files: data/ncbi.ndjson; Input files updated by another job: data/ncbi_dataset_report.tsv, data/ncbi_dataset_sequences.fasta
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:18 2025]
+Finished job 3.
+4 of 10 steps (40%) done
+Removing temporary output data/ncbi_dataset_sequences.fasta.
+Removing temporary output data/ncbi_dataset_report.tsv.
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:33:18 2025]
+localrule curate:
+    input: data/ncbi.ndjson, data/all-geolocation-rules.tsv, source-data/annotations.tsv
+    output: data/trans_metadata.tsv, data/trans_sequences.fasta
+    log: logs/curate.txt
+    jobid: 2
+    benchmark: benchmarks/curate.txt
+    reason: Missing output files: data/trans_sequences.fasta, data/trans_metadata.tsv; Input files updated by another job: data/ncbi.ndjson
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:21 2025]
+Finished job 2.
+5 of 10 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+
+[Mon Mar 31 16:33:21 2025]
+localrule sort:
+    input: data/trans_sequences.fasta
+    output: data/sequences.fasta
+    jobid: 1
+    reason: Missing output files: data/sequences.fasta; Input files updated by another job: data/trans_sequences.fasta
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:21 2025]
+Finished job 1.
+6 of 10 steps (60%) done
+Select jobs to execute...
+Execute 2 jobs...
+
+[Mon Mar 31 16:33:21 2025]
+localrule nextclade:
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    jobid: 8
+    reason: Missing output files: data/references/nextclade.tsv; Input files updated by another job: data/sequences.fasta
+    threads: 8
+    resources: tmpdir=/tmp
+
+
+[Mon Mar 31 16:33:21 2025]
+localrule metadata:
+    input: data/trans_metadata.tsv, data/sequences.fasta
+    output: data/metadata_raw.tsv
+    jobid: 9
+    reason: Missing output files: data/metadata_raw.tsv; Input files updated by another job: data/sequences.fasta, data/trans_metadata.tsv
+    resources: tmpdir=/tmp
+
+[Mon Mar 31 16:33:21 2025]
+Error in rule nextclade:
+    jobid: 8
+    input: data/sequences.fasta, data/references/reference.fasta
+    output: data/references/nextclade.tsv
+    shell:
+        
+        nextclade3 run -D data/references/  -j 8                           --output-columns-selection seqName clade qc.overallScore qc.overallStatus alignmentScore  alignmentStart  alignmentEnd  coverage dynamic                           --output-tsv data/references/nextclade.tsv                           data/sequences.fasta
+        
+        (one of the commands exited with non-zero exit code; note that snakemake uses bash strict mode!)
+
+[Mon Mar 31 16:33:23 2025]
+Finished job 9.
+7 of 10 steps (70%) done
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look above for error message
+Complete log: .snakemake/log/2025-03-31T163309.549936.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

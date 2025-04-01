@@ -1,0 +1,6 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingInputException in rule all in file /mnt/c/Users/msomno/Documents/GitHub/Seasonal_Coronaviruses/ingest/Snakefile, line 39:
+Missing input files for rule all:
+    affected files:
+        data/metadata.tsv

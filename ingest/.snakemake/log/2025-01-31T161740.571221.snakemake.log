@@ -1,0 +1,36 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                               count
+------------------------------  -------
+all                                   1
+curate                                1
+extend_metadata                       1
+extract_ncbi_dataset_sequences        1
+fetch_ncbi_dataset_package            1
+format_ncbi_dataset_report            1
+format_ncbi_datasets_ndjson           1
+metadata                              1
+nextclade                             1
+sort                                  1
+total                                10
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Fri Jan 31 16:17:40 2025]
+localrule fetch_ncbi_dataset_package:
+    output: data/ncbi_dataset.zip
+    jobid: 5
+    benchmark: benchmarks/fetch_ncbi_dataset_package.txt
+    reason: Missing output files: data/ncbi_dataset.zip
+    resources: tmpdir=/tmp
+
+RuleException in rule fetch_ncbi_dataset_package in file /mnt/c/Users/msomno/Documents/GitHub/Seasonal_Coronaviruses/ingest/workflow/snakemake_rules/fetch_from_ncbi.smk, line 39:
+AttributeError: 'Params' object has no attribute 'ncbi_accessions', when formatting the following:
+
+        datasets download virus genome accession --inputfile {params.ncbi_accessions:q}             --no-progressbar             --filename {output.dataset_package}
+        

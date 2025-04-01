@@ -1,0 +1,7 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingInputException in rule curate in file /mnt/c/Users/msomno/Documents/GitHub/Seasonal_Coronaviruses/ingest/workflow/snakemake_rules/curate.smk, line 57:
+Missing input files for rule curate:
+    output: data/trans_metadata.tsv, data/trans_sequences.fasta
+    affected files:
+        defaults/annotations.tsv

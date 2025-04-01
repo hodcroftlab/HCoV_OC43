@@ -1,0 +1,24 @@
+host: TPH-L24056
+Building DAG of jobs...
+Using shell: /usr/bin/bash
+Provided cores: 9
+Rules claiming more threads will be scaled down.
+Job stats:
+job                    count
+-------------------  -------
+update_strain_names        1
+total                      1
+
+Select jobs to execute...
+Execute 1 jobs...
+
+[Tue Apr  1 14:05:33 2025]
+Job 0: 
+        Updating strain information in metadata.
+        
+Reason: Missing output files: data/updated_strain_names.tsv
+
+[Tue Apr  1 14:05:57 2025]
+Finished job 0.
+1 of 1 steps (100%) done
+Complete log: .snakemake/log/2025-04-01T140533.427524.snakemake.log

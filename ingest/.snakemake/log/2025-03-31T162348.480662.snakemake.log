@@ -1,0 +1,4 @@
+host: TPH-L24056
+Building DAG of jobs...
+MissingRuleException:
+No rule to produce fetch_from_ncbi.smk (if you use input functions make sure that they don't raise unexpected exceptions).
