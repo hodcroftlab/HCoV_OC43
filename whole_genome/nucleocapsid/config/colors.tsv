@@ -1,0 +1,61 @@
+country	Japan	#5b3d1e
+country	New Zealand	#996633
+country	Australia	#c37509
+country	Canada	#9a2219
+country	USA	#DC2F24
+country	Mexico	#dc6024
+country	Haiti	#f79203
+country	United Kingdom	#FFCC00
+country	Denmark	#cbee5b
+country	Sweden	#74ee5b
+country	Switzerland	#2dc30e
+country	France	#339933
+country	Spain	#058360
+country	Belgium	#045e45
+country	Netherlands	#003311
+country	China	#511EA8
+country	Hong Kong	#4928B4
+country	Taiwan	#4334BF
+country	Vietnam	#527CCE
+country	Philippines	#528EB1
+country	India	#3399FF
+country	Kenya	#680AC7
+country	Tanzania	#9933FF
+country	Canary Islands	#ff00ff
+
+region	Japan Korea	#996633
+region	North America	#DC2F24
+region	South America	#f19d00
+region	Oceania	#FFCC00
+region	Europe	#339933
+region	China	#511EA8
+region	Southeast Asia	#050080
+region	West Asia	#527CCE
+region	South Asia	#3399FF
+region	Africa	#9933FF
+
+study	Sweden	#88419d
+study	Belgium	#fd8d3c
+study	Netherlands	#0570b0
+
+age_range1	<1y	#d7191c
+age_range1	1-5y	#fdae61
+age_range1	6-17y	#ffd11a
+age_range1	18-64y	#abd9e9
+age_range1	>=65y	#2c7bb6
+
+age_range2	<18y	#d7191c
+age_range2	18-64y	#ffd11a
+age_range2	>=65y	#2c7bb6
+
+age_range3	<18y	#d7191c
+age_range3	>=18y	#2c7bb6
+
+source1	Spain	#ff0000
+sourc1e	Sweden	#88419d
+sourc1e	Netherlands	#fd8d3c
+sourc1e	Belgium	#0570b0
+sourc1e	Switzerland	#00b050
+
+sympto1m	AFM	#ff0000
+sympto1m	limb_weakness	#fd8d3c
