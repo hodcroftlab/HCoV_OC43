@@ -1,1 +1,0 @@
-#Listed in this file are sequences which have been excluded from the analysis due to reasons listed below

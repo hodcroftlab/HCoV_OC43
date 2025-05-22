@@ -103,7 +103,8 @@ rule extract:
     input: 
         genbank_file = files.reference
     output: 
-        extracted_fasta = "{seg}/results/extracted.fasta"    
+        extracted_fasta = "{seg}/results/extracted.fasta",    
+        extracted_genbank = "{seg}/results/extracted.gbk" 
     params:
         product_name = "{seg}"
     shell:
@@ -111,19 +112,19 @@ rule extract:
         python scripts/extract_gene_from_whole_genome.py \
         --genbank_file {input.genbank_file} \
         --output_fasta {output.extracted_fasta} \
-        --product_name {params.product_name}
+        --product_name {params.product_name} \
+        --output_genbank {output.extracted_genbank}
 
         """
-
 
 rule blast:
     input: 
         blast_db_file = rules.extract.output.extracted_fasta,  # Provide a BLAST reference
         seqs_to_blast = rules.fetch.output.sequences
     output:
-        blast_out = "temp/{seg}/blast_out.csv"
+        blast_out = "{seg}/results/blast_out.csv"
     params:
-        blast_db = "temp/{seg}/blast_database"
+        blast_db = "{seg}/results/blast_database"
     shell:
         """
         sed -i 's/-//g' {input.seqs_to_blast}
@@ -238,17 +239,18 @@ rule filter:
           - excluding strains in {input.exclude}
         """
     input:
-        sequences = rules.fetch.output.sequences,
+        sequences = rules.blast_sort.output.sequences,
         sequence_index = rules.index_sequences.output.sequence_index,
         # metadata = rules.curate_meta_dates.output.final_metadata,
         metadata = files.metadata,
         exclude = files.dropped_strains
     output:
-        sequences = "{seg}/results/filtered.fasta"
+        sequences = "{seg}/results/filtered.fasta",
+        metadata = "{seg}/results/filtered_metadata.tsv"
     params:
         #group_by = "country year month", --group-by {params.group_by} \
         #sequences_per_group = 20,  --sequences-per-group {params.sequences_per_group} \
-        min_date = 1960, #Set to 1960, as this was when HCoV first discovered, but OC43 1967
+        min_date = 1960, #Set to 1960, as this was when HCoV first discovered, but NL63 2004
         strain_id_field= "accession",
         #min_length = 20000 #--min-length {params.min_length}
         
@@ -261,7 +263,9 @@ rule filter:
             --metadata {input.metadata} \
             --metadata-id-columns {params.strain_id_field} \
             --exclude {input.exclude} \
+            --exclude-ambiguous-dates-by year \
             --output {output.sequences} \
+            --output-metadata {output.metadata} \
             --min-date {params.min_date} \
             
         """
@@ -270,21 +274,6 @@ rule filter:
 #Nextclade needs the reference in fasta format, whereas Augur prefers the .gb format
 ###########################
 
-rule reference_gb_to_fasta:
-    message:
-        """
-        Converting reference sequence from genbank to fasta format and putting it in the reference folders of your proteins
-        """
-    input:
-        reference = files.reference
-
-    output:
-        reference = "{seg}/results/reference_sequence.fasta"
-    run:
-        from Bio import SeqIO 
-        SeqIO.convert(input.reference, "genbank", output.reference, "fasta")
-
-
 rule align:
     message:
             """
@@ -292,7 +281,7 @@ rule align:
             """
     input:
         sequences = rules.filter.output.sequences,
-        reference = rules.reference_gb_to_fasta.output.reference
+        reference = rules.extract.output.extracted_fasta
     output:
         alignment = "{seg}/results/aligned.fasta"
 
@@ -307,6 +296,7 @@ rule align:
         --allowed-mismatches {params.nuc_mismatch_all} \
         --min-length {params.nuc_seed_length} \
         --include-reference false \
+        --retry-reverse-complement true \
         --output-fasta {output.alignment} 
         """
 
@@ -350,9 +340,7 @@ rule refine:
     input:
         tree = rules.tree.output.tree,
         alignment = rules.align.output.alignment,
-        # metadata = rules.curate_meta_dates.output.final_metadata,
-        metadata = files.metadata,
-        reference = files.reference
+        metadata = rules.filter.output.metadata
     output:
         tree = "{seg}/results/tree.nwk",
         node_data = "{seg}/results/branch_lengths.json"
@@ -361,8 +349,8 @@ rule refine:
         date_inference = "marginal",
         clock_filter_iqd = 3, # set to 6 if you want more control over outliers
         strain_id_field ="accession",
-        clock_rate = 0.004, # remove for estimation by augur; check literature
-        clock_std_dev = 0.0015
+        # clock_rate = 0.004, # remove for estimation by augur; check literature
+        # clock_std_dev = 0.0015
 
     shell:
         """
@@ -376,12 +364,13 @@ rule refine:
             --timetree \
             --coalescent {params.coalescent} \
             --date-confidence \
-            --clock-rate {params.clock_rate}\
-            --clock-std-dev {params.clock_std_dev} \
             --date-inference {params.date_inference} \
             --clock-filter-iqd {params.clock_filter_iqd}
         """
 
+
+            # --clock-rate {params.clock_rate}\
+            # --clock-std-dev {params.clock_std_dev} \
 # ##############################
 # # Ancestral sequences and amino acids
 # ###############################
@@ -412,7 +401,7 @@ rule translate:
     input:
         tree = rules.refine.output.tree,
         node_data = rules.ancestral.output.node_data,
-        reference = files.reference
+        reference = rules.extract.output.extracted_genbank
     output:
         node_data = "{seg}/results/aa_muts.json"
 
@@ -429,8 +418,7 @@ rule traits:
     message: "Inferring ancestral traits for {params.traits!s}"
     input:
         tree = rules.refine.output.tree,
-        # metadata =rules.curate_meta_dates.output.final_metadata
-        metadata = files.metadata
+        metadata = rules.filter.output.metadata
     output:
         node_data = "{seg}/results/traits.json"
         
