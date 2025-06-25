@@ -28,7 +28,7 @@ rule files:
     input:
         sequence_length =   "{seg}",
         dropped_strains =   "config/dropped_strains.txt",
-        reference =         "ingest/data/references/oc43_full_reference.gb"    ,
+        reference =         "ingest/data/references/reference.gbk"    ,
         lat_longs =         "config/lat_longs.tsv",
         auspice_config =    "{seg}/config/auspice_config.json",
         colors =            "config/colors.tsv",
@@ -162,54 +162,7 @@ rule blast_sort:
 # snakemake -c 9 "temp/nucleocapsid/blast_out.csv" -f
 # snakemake -c 9 nucleocapsid/results/sequences.fasta
 
-##############################
-# AUGUR CURATE AND MERGE
-# Change the format of the dates in the metadata
-# Attention: ```augur curate``` only accepts iso 8 formats; please make sure that you save e.g. Excel files in the correct format
-# Merge with other metadata files you might have
 
-###############################
-
-# rule curate_meta_dates:
-#     message:
-#         """
-#         Cleaning up metadata with augur curate and merge your metadata with the one from ingest
-#         """
-#     input:
-#         meta = files.metadata,
-#         blast_length = rules.blast_sort.output.blast_length, 
-#     params:
-#         strain_id_field = "accession",
-#         sorted_meta_accessions = "temp/{seg}/meta_accessions.txt",
-#         sorted_blast_length_accessions = "temp/{seg}/blast_accessions.txt",
-#         common_accessions = "temp/{seg}/common_accessions.txt",
-    
-#     output:
-#         final_metadata = "{seg}/results/metadata.tsv",
-#         filtered_meta = "{seg}/results/filtered_metadata.tsv",
-#         filtered_blast_length = "{seg}/results/filtered_blast_length.tsv"
-#     shell:
-#         """
-    
-#         #Preventing Augur merge sqlite right/full join error 
-#         cut -f1 {input.meta} | sort > {params.sorted_meta_accessions}
-#         cut -f1 {input.blast_length} | sort > {params.sorted_blast_length_accessions}
-#         comm -12 {params.sorted_meta_accessions} {params.sorted_blast_length_accessions} > {params.common_accessions}
-#         (grep -Ff {params.common_accessions} {input.meta}) > {output.filtered_meta}
-#         ( grep -Ff {params.common_accessions} {input.blast_length}) > {output.filtered_blast_length}
-#         sort -k1,1 {output.filtered_meta} > {output.filtered_meta}
-#         sort -k1,1 {output.filtered_blast_length} > {output.filtered_blast_length}
-
-
-
-#         # Merge curated metadata
-#         # augur merge --metadata meta={output.filtered_meta} extended_meta={output.filtered_blast_length} \
-#         #     --metadata-id-columns {params.strain_id_field} \
-#         #     --metadata-delimiters '\t' \
-#         #     --output-metadata {output.final_metadata}
-
-#         paste {output.filtered_meta} {output.filtered_blast_length} > {output.final_metadata}
-#         """
 ###########################################################
 
 rule index_sequences:
@@ -349,6 +302,7 @@ rule refine:
         date_inference = "marginal",
         clock_filter_iqd = 3, # set to 6 if you want more control over outliers
         strain_id_field ="accession",
+        rooting = "mid_point"
         # clock_rate = 0.004, # remove for estimation by augur; check literature
         # clock_std_dev = 0.0015
 
@@ -365,7 +319,8 @@ rule refine:
             --coalescent {params.coalescent} \
             --date-confidence \
             --date-inference {params.date_inference} \
-            --clock-filter-iqd {params.clock_filter_iqd}
+            --clock-filter-iqd {params.clock_filter_iqd}\
+            --root {params.rooting}
         """
 
 

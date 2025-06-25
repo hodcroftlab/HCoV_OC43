@@ -1,16 +1,17 @@
 ##gff-version 3
 #!gff-spec-version 1.21
 #!processor NCBI annotwriter
-##sequence-region AY391777.1 1 30738
+##sequence-region NC_006213.1 1 30741
 ##species https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=31631
-AY391777.1	Genbank	region	1	30738	.	+	.	ID=AY391777.1:1..30738;Dbxref=taxon:31631,ATCC:VR-759;gb-synonym=HCoV-OC43;gbkey=Src;isolate=OC43;mol_type=genomic RNA;note=prototype strain;strain=ATCC VR-759
-AY391777.1	Genbank	CDS	211	13332	.	+	0	Name=_replicase_polyprotein;gbkey=CDS;protein_id=AAR01012.1;ID=cds-AAR01012.1;Dbxref=NCBI_GP:AAR01012.1;exception=ribosomal slippage;product=replicase polyprotein;Note=translated via a -1 ribosomal frameshift%3B ORF 1a/1b
-AY391777.1	Genbank	CDS	13332	21497	.	+	0	Name=_replicase_polyprotein;gbkey=CDS;protein_id=AAR01012.1;ID=cds-AAR01012.1;Dbxref=NCBI_GP:AAR01012.1;exception=ribosomal slippage;product=replicase polyprotein;Note=translated via a -1 ribosomal frameshift%3B ORF 1a/1b
-AY391777.1	Genbank	CDS	21507	22343	.	+	0	Name=NS2a_protein;gbkey=CDS;gene=NS2a;protein_id=AAR01013.1;product=NS2a protein;ID=cds-AAR01013.1;Dbxref=NCBI_GP:AAR01013.1
-AY391777.1	Genbank	CDS	22355	23629	.	+	0	Name=HE_protein;gene=HE;gbkey=CDS;product=HE protein;protein_id=AAR01014.1;ID=cds-AAR01014.1;Dbxref=NCBI_GP:AAR01014.1
-AY391777.1	Genbank	CDS	23644	27729	.	+	0	Name=S_protein;gene=S;gbkey=CDS;product=S protein;protein_id=AAR01015.1;ID=cds-AAR01015.1;Dbxref=NCBI_GP:AAR01015.1
-AY391777.1	Genbank	CDS	27817	28146	.	+	0	Name=NS2_protein;gbkey=CDS;gene=NS2;protein_id=AAR01016.1;product=NS2 protein;ID=cds-AAR01016.1;Dbxref=NCBI_GP:AAR01016.1
-AY391777.1	Genbank	CDS	28133	28387	.	+	0	Name=NS3_protein;gbkey=CDS;gene=NS3;protein_id=AAR01017.1;product=NS3 protein;ID=cds-AAR01017.1;Dbxref=NCBI_GP:AAR01017.1;Note=envelope protein%3B small membrane protein
-AY391777.1	Genbank	CDS	28402	29094	.	+	0	Name=M_protein;gene=M;gbkey=CDS;product=M protein;protein_id=AAR01018.1;ID=cds-AAR01018.1;Dbxref=NCBI_GP:AAR01018.1
-AY391777.1	Genbank	CDS	29104	30450	.	+	0	Name=_N_protein;gene=N;gbkey=CDS;product=N protein;protein_id=AAR01019.1;ID=cds-AAR01019.1;Dbxref=NCBI_GP:AAR01019.1
-AY391777.1	Genbank	CDS	29441	29788	.	+	0	Name=_N2_protein;gene=N2;gbkey=CDS;product=N2 protein;protein_id=AAR01020.1;ID=cds-AAR01020.1;Dbxref=NCBI_GP:AAR01020.1
+NC_006213.1	RefSeq	region	1	30741	.	+	.	ID=NC_006213.1:1..30741;Dbxref=ATCC:VR-759,taxon:31631;country=USA;gb-synonym=HCoV-OC43;gbkey=Src;mol_type=genomic RNA;serotype=OC43;strain=ATCC VR-759
+NC_006213.1	RefSeq	CDS	210	13340	.	+	0	Name=ORF1ab;gbkey=CDS;gene=ORF1ab;locus_tag=EYW02_gp1;protein_id=YP_009555238.1;ID=cds-YP_009555238.1;exception=ribosomal slippage;product=ORF1ab polyprotein;Dbxref=GenBank:YP_009555238.1,GeneID:39105222;Note=translated via a -1 ribosomal frameshift%3B ORF 1a/1b%3B ORF1ab polyprotein is cleaved to yield the RNA-dependent RNA polymerase and other nonstructural proteins
+NC_006213.1	RefSeq	CDS	13340	21496	.	+	0	Name=ORF1ab;gbkey=CDS;gene=ORF1ab;locus_tag=EYW02_gp1;protein_id=YP_009555238.1;ID=cds-YP_009555238.1;exception=ribosomal slippage;product=ORF1ab polyprotein;Dbxref=GenBank:YP_009555238.1,GeneID:39105222;Note=translated via a -1 ribosomal frameshift%3B ORF 1a/1b%3B ORF1ab polyprotein is cleaved to yield the RNA-dependent RNA polymerase and other nonstructural proteins
+NC_006213.1	RefSeq	CDS	210	13361	.	+	0	Name=ORF1ab_002;gbkey=CDS;gene=ORF1ab;locus_tag=EYW02_gp1;protein_id=YP_009924317.1;product=ORF1a polyprotein;ID=cds-YP_009924317.1;Dbxref=GenBank:YP_009924317.1,GeneID:39105222;Note=ORF1a polyprotein is cleaved to yield the nonstructural proteins
+NC_006213.1	RefSeq	CDS	21506	22342	.	+	0	Name=NS2;gbkey=CDS;gene=ns2;product=ns2;locus_tag=EYW02_gp2;protein_id=YP_009555239.1;ID=cds-YP_009555239.1;Note=non-structural protein 2;Dbxref=GenBank:YP_009555239.1,GeneID:39105215
+NC_006213.1	RefSeq	CDS	22354	23628	.	+	0	Name=hemagglutinin-esterase;gene=HE;gbkey=CDS;locus_tag=EYW02_gp3;protein_id=YP_009555240.1;ID=cds-YP_009555240.1;product=hemagglutinin-esterase;Dbxref=GenBank:YP_009555240.1,GeneID:39105216
+NC_006213.1	RefSeq	CDS	23643	27704	.	+	0	Name=spike;gene=S;gbkey=CDS;locus_tag=EYW02_gp4;protein_id=YP_009555241.1;ID=cds-YP_009555241.1;product=spike surface glycoprotein;Dbxref=GenBank:YP_009555241.1,GeneID:39105218
+NC_006213.1	RefSeq	CDS	27792	28121	.	+	0	Name=ns12_9;gbkey=CDS;gene=ns12.9;product=ns12.9;locus_tag=EYW02_gp5;protein_id=YP_009555242.1;ID=cds-YP_009555242.1;Note=non-structural protein%3B ORF5;Dbxref=GenBank:YP_009555242.1,GeneID:39105219
+NC_006213.1	RefSeq	CDS	28108	28362	.	+	0	Name=envelope;gbkey=CDS;protein_id=YP_009555243.1;product=envelope protein;ID=cds-YP_009555243.1;Dbxref=GenBank:YP_009555243.1
+NC_006213.1	RefSeq	CDS	28377	29069	.	+	0	Name=membrane;gene=M;gbkey=CDS;locus_tag=EYW02_gp7;protein_id=YP_009555244.1;product=membrane protein;ID=cds-YP_009555244.1;Dbxref=GenBank:YP_009555244.1,GeneID:39105220
+NC_006213.1	RefSeq	CDS	29079	30425	.	+	0	Name=nucleocapsid;gene=N;gbkey=CDS;locus_tag=EYW02_gp8;protein_id=YP_009555245.1;ID=cds-YP_009555245.1;product=nucleocapsid protein;Dbxref=GenBank:YP_009555245.1,GeneID:39105221
+NC_006213.1	RefSeq	CDS	29140	29322	.	+	0	Name=I_protein;gene=N;gbkey=CDS;locus_tag=EYW02_gp8;product=I protein;protein_id=YP_009924318.1;ID=cds-YP_009924318.1;Dbxref=GenBank:YP_009924318.1,GeneID:39105221
