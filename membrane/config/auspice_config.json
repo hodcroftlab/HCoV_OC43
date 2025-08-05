@@ -1,9 +1,10 @@
 {
-    "title": "Human coronavirus OC43: Membrane",
+    "title": "Genomic Epidemiology of Human coronavirus OC43 ",
     "maintainers": [
-      {"name": "Nosihle Msomi", "url": "https://www.swisstph.ch/en/staff/profile/people/nosihle-msomi"}
+      {"name": "Nosihle Msomi", "url": "https://www.swisstph.ch/en/staff/profile/people/nosihle-msomi"},
+      {"name": "Emma Hodcroft", "url": "https://www.swisstph.ch/en/staff/profile/people/emma-hodcroft"}
     ],
-    "build_url": "https://github.com/hodcroftlab/Seasonal_Coronaviruses",
+    "build_url": "https://github.com/hodcroftlab/HCoV_OC43",
     "colorings": [
       {
         "key": "gt",
@@ -29,6 +30,16 @@
         "key": "region",
         "title": "Region",
         "type": "categorical"
+      },
+      {
+        "key": "published_clade",
+        "title": "Published Genotypes",
+        "type": "categorical"
+      },
+      {
+        "key": "blast_length",
+        "title": " Blast Sequence length",
+        "type": "continuous"
       }
     ],
     "geo_resolutions": [
@@ -46,6 +57,9 @@
     "filters": [
       "country",
       "region",
-      "author"
+      "author",
+      "published_clade",
+      "blast_length"
+  
     ]
   }

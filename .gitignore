@@ -25,3 +25,8 @@ scripts/bin
 
 .env
 
+/.snakemake
+/.snakemake/metadata
+/diff_rootings
+*.json
+*.json

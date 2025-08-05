@@ -57,14 +57,14 @@ FEATURES             Location/Qualifiers
      CDS             210..13361
                      /ID="cds-YP_009924317.1"
                      /Dbxref="GenBank:YP_009924317.1,GeneID:39105222"
-                     /Name="ORF1ab_002"
+                     /Name="ORF1"
                      /Note="ORF1a polyprotein is cleaved to yield the
                      nonstructural proteins"
                      /gbkey="CDS"
-                     /gene="ORF1ab"
-                     /locus_tag="ORF1ab_002"
+                     /gene="ORF1a"
+                     /locus_tag="ORF1a"
                      /product="ORF1a polyprotein"
-                     /protein_id="YP_009924317.1"
+                     /protein_id="YP_009924317.1"                 
      CDS             21506..22342
                      /ID="cds-YP_009555239.1"
                      /Dbxref="GenBank:YP_009555239.1,GeneID:39105215"

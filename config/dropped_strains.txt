@@ -1,3 +1,36 @@
 #Listed in this file are sequences which have been excluded from the analysis due to reasons listed below
 
 MW532119 
+
+
+#Dropped because patent sequences 
+
+CQ772291
+CQ772300
+CQ772309
+CS050812
+CS050831
+CS050853
+CS050880
+DD266150
+
+
+#Dropped because look a bit too over diverged 
+
+MW532112
+KF572816
+OK245433
+OK500301
+PQ659995
+
+# from spike
+PQ630088 #spike 
+OK500334
+ON376724
+ON376725
+OK500335
+OK662397
+PQ630073
+PQ630123
+PQ630077
+PQ630108

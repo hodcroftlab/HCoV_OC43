@@ -1,0 +1,69 @@
+#Pre-set parameters to be used in the workflow for each gene or whole genome build 
+#For each gene, provide the following parameter values: 
+#blast_sort: 
+  #min_length: the minimumum sequence length required after blast
+  #max_length: the mmaximum sequence length required for after blast
+
+#augur_refine: 
+  # coalescent:"opt",
+  # date_inference: "marginal",
+  # clock_filter_iqd: # set to 6 if you want more control over outliers
+  # strain_id_field: "accession",
+  # rooting: "mid_point"
+  # clock_rate: 0.004, # remove for estimation by augur; check literature
+  # clock_std_dev: 0.0015
+
+spike:
+  blast_sort:
+    min_length: 2472
+    max_length: 4120
+  augur_refine:
+    coalescent: "opt"
+    date_inference: "marginal"
+    clock_filter_iqd: 3
+    strain_id_field: "accession"
+    rooting: "least-squares"
+
+nucleocapsid:
+  blast_sort:
+    min_length: 810
+    max_length: 1450
+  augur_refine:
+    coalescent: "opt"
+    date_inference: "marginal"
+    clock_filter_iqd: 3
+    strain_id_field: "accession"
+    rooting: "least-squares"
+
+membrane:
+  blast_sort:
+    min_length: 450
+    max_length: 750
+  augur_refine:
+    coalescent: "opt"
+    date_inference: "marginal"
+    clock_filter_iqd: 3
+    strain_id_field: "accession"
+    rooting: "best"
+
+hemagglutinin-esterase:
+  blast_sort:
+    min_length: 700
+    max_length: 1300
+  augur_refine:
+    coalescent: "opt"
+    date_inference: "marginal"
+    clock_filter_iqd: 3
+    strain_id_field: "accession"
+    rooting: "best"
+
+whole_genome:
+  blast_sort:
+    min_length: 20000
+    max_length: 30738
+  augur_refine:
+    coalescent: "opt"
+    date_inference: "marginal"
+    clock_filter_iqd: 3
+    strain_id_field: "accession"
+    rooting: "mid_point"

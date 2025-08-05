@@ -3,22 +3,24 @@
 # To run a default protein xy run:
 # snakemake  auspice/HCoV_OC43_protein_xy.json --cores 9
 
-# To run a default whole genome run (>6400bp):
+# To run a default whole genome run:
 # snakemake auspice/HCoV_OC43_genome.json --cores 9
 
 # Excluding envelope for OC43 because not well annotated 
 ###############
+
+configfile: "config/config.yaml"
+
 wildcard_constraints:
-    seg="spike|nucleocapsid|membrane|whole_genome"  
+    seg="spike|nucleocapsid|membrane|hemagglutinin-esterase|whole_genome"  
 
 # Define segments to analyze
-segments = ["spike", "nucleocapsid",  "membrane", "whole_genome"] # This is only for the expand in rule all
+segments = ["spike", "nucleocapsid",  "membrane", "hemagglutinin-esterase", "whole_genome"] # This is only for the expand in rule all
 
 # Expand augur JSON paths
 rule all:
     input:
-        #augur_jsons = expand("auspice/HCoV_OC43_{segs}.json", segs=segments) ## TODO: replace <your_virus> with actual virus name (Ctrl+H)
-        augur_jsons = expand("auspice/HCoV_OC43_{segs}-accession.json", segs=segments) ## TODO: replace <your_virus> with actual virus name (Ctrl+H)
+        augur_jsons = expand("auspice/HCoV_OC43_{segs}.json", segs=segments) ## TODO: replace <your_virus> with actual virus name (Ctrl+H)
 
 ##############################
 # Rule to handle input and config files
@@ -33,20 +35,16 @@ rule files:
         auspice_config =    "{seg}/config/auspice_config.json",
         colors =            "config/colors.tsv",
         clades =            "{seg}/config/clades_genome.tsv",
+        published_clades =  "config/published_clades.xlsx",
         regions=            "config/geo_regions.tsv",
         metadata=           "data/metadata.tsv",
-        extended_metafile=  "data/meta_manual.tsv",  ###TODO: Add an empty tsv file to this path or metadata for one of your sequences
+        updated_dates = "data/updated_dates.xlsx",
 
 files = rules.files.input
 
 ##############################
 # Download from NBCI Virus with ingest snakefile
 ###############################
-
-# workdir: "ingest"
-# include: "ingest/Snakefile"
-# workdir: ".."
-
 
 rule fetch:
     input:
@@ -89,9 +87,7 @@ rule update_strain_names:
     shell:
         """
         time bash scripts/update_strain.sh {input.file_in} {params.backup} {output.file_out}
-        """
-
-
+        """ 
 
 ##############################
 # BLAST
@@ -145,8 +141,10 @@ rule blast_sort:
         blast_length= "{seg}/results/blast_{seg}_length.tsv"
     params:
         range = "{seg}",  # Determines which protein (or whole genome) is processed
-        min_length = lambda wildcards: {"spike": 2472, "nucleocapsid": 810, "membrane": 450, "whole_genome": 20000}[wildcards.seg],  # Min length 
-        max_length = lambda wildcards: {"spike": 4120, "nucleocapsid": 1450, "membrane": 750, "whole_genome": 30738}[wildcards.seg]  # Max length added 100 to actual length
+        # min_length = lambda wildcards: {"spike": 2472, "nucleocapsid": 810, "membrane": 450, "hemagglutinin-esterase": 700, "whole_genome": 20000}[wildcards.seg],  # Min length 
+        # max_length = lambda wildcards: {"spike": 4120, "nucleocapsid": 1450, "membrane": 750, "hemagglutinin-esterase": 1300,  "whole_genome": 30738}[wildcards.seg]  # Max length added 100 to actual length
+        min_length = lambda wildcards: config[wildcards.seg]["blast_sort"]["min_length"],
+        max_length = lambda wildcards: config[wildcards.seg]["blast_sort"]["max_length"],
     shell:
         """
         python scripts/blast_sort.py --blast {input.blast_result} \
@@ -159,10 +157,29 @@ rule blast_sort:
 
         
         """
-# snakemake -c 9 "temp/nucleocapsid/blast_out.csv" -f
-# snakemake -c 9 nucleocapsid/results/sequences.fasta
 
+rule update_metadata:
+    message: 
+        """
+        Merging metadata from publicly available sequences with metadata from unpublished sequences"
+        """
+    input: 
+        public = files.metadata,
+        published_clades = files.published_clades,
+        updated_dates = files.updated_dates, 
+        blast_length = rules.blast_sort.output.blast_length
+    output:
+        final_metadata = "{seg}/results/final_metadata.tsv"
+    shell:
+        """
+       python scripts/merge_tsv.py \
+       --inputfile1 {input.public}\
+       --inputfile2 {input.published_clades} \
+       --inputfile3 {input.updated_dates} \
+       --inputfile4 {input.blast_length} \
+       --outputfile {output.final_metadata} 
 
+        """  
 ###########################################################
 
 rule index_sequences:
@@ -174,7 +191,6 @@ rule index_sequences:
         sequences = rules.blast_sort.output.sequences
     output:
         sequence_index = "{seg}/results/sequence_index.tsv"
-    #conda: "ingest/workflow/envs/nextstrain.yaml"
     shell:
         """
         augur index \
@@ -195,19 +211,15 @@ rule filter:
         sequences = rules.blast_sort.output.sequences,
         sequence_index = rules.index_sequences.output.sequence_index,
         # metadata = rules.curate_meta_dates.output.final_metadata,
-        metadata = files.metadata,
+        metadata = rules.update_metadata.output.final_metadata,
         exclude = files.dropped_strains
     output:
         sequences = "{seg}/results/filtered.fasta",
         metadata = "{seg}/results/filtered_metadata.tsv"
     params:
-        #group_by = "country year month", --group-by {params.group_by} \
-        #sequences_per_group = 20,  --sequences-per-group {params.sequences_per_group} \
         min_date = 1960, #Set to 1960, as this was when HCoV first discovered, but NL63 2004
         strain_id_field= "accession",
-        #min_length = 20000 #--min-length {params.min_length}
-        
-    #conda: "ingest/workflow/envs/nextstrain.yaml"
+        exclude = "'host!=Homo sapiens'"
     shell:
         """
         augur filter \
@@ -217,9 +229,10 @@ rule filter:
             --metadata-id-columns {params.strain_id_field} \
             --exclude {input.exclude} \
             --exclude-ambiguous-dates-by year \
-            --output {output.sequences} \
+            --output-sequences {output.sequences} \
             --output-metadata {output.metadata} \
             --min-date {params.min_date} \
+            --exclude-where {params.exclude}
             
         """
 
@@ -298,13 +311,18 @@ rule refine:
         tree = "{seg}/results/tree.nwk",
         node_data = "{seg}/results/branch_lengths.json"
     params:
-        coalescent = "opt",
-        date_inference = "marginal",
-        clock_filter_iqd = 3, # set to 6 if you want more control over outliers
-        strain_id_field ="accession",
-        rooting = "mid_point"
+        # coalescent = "opt",
+        # date_inference = "marginal",
+        # clock_filter_iqd = 3, # set to 6 if you want more control over outliers
+        # strain_id_field ="accession",
+        # rooting = "best"
         # clock_rate = 0.004, # remove for estimation by augur; check literature
         # clock_std_dev = 0.0015
+        coalescent = lambda wildcards: config[wildcards.seg]["augur_refine"]["coalescent"],
+        date_inference = lambda wildcards: config[wildcards.seg]["augur_refine"]["date_inference"],
+        clock_filter_iqd = lambda wildcards: config[wildcards.seg]["augur_refine"]["clock_filter_iqd"],
+        strain_id_field = lambda wildcards: config[wildcards.seg]["augur_refine"]["strain_id_field"],
+        rooting = lambda wildcards: config[wildcards.seg]["augur_refine"]["rooting"],
 
     shell:
         """
@@ -320,7 +338,8 @@ rule refine:
             --date-confidence \
             --date-inference {params.date_inference} \
             --clock-filter-iqd {params.clock_filter_iqd}\
-            --root {params.rooting}
+            --root {params.rooting} \
+            --stochastic-resolve
         """
 
 
@@ -420,7 +439,7 @@ rule export:
     input:
         tree = rules.refine.output.tree,
         # metadata = rules.curate_meta_dates.output.final_metadata,
-        metadata = files.metadata,
+        metadata = rules.filter.output.metadata,
         branch_lengths = rules.refine.output.node_data,
         traits = rules.traits.output.node_data,
         nt_muts = rules.ancestral.output.node_data,
@@ -433,7 +452,7 @@ rule export:
         strain_id_field= "accession"
 
     output:
-        auspice_json = "auspice/HCoV_OC43_{seg}-accession.json"
+        auspice_json = "auspice/HCoV_OC43_{seg}.json"
         
     shell:
         """
