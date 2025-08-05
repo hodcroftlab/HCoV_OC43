@@ -1,4 +1,0 @@
-host: TPH-L24056
-Building DAG of jobs...
-MissingRuleException:
-No rule to produce nucleocapsid/results/sequences_index.tsv (if you use input functions make sure that they don't raise unexpected exceptions).
