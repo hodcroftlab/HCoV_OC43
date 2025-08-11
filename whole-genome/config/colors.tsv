@@ -16,7 +16,7 @@ country	Comoros	#72BF5B
 country	Djibouti	#82DF6B
 country	Eritrea	#92FF7B
 country	Ethiopia	#A2FF8B
-country	Kenya	#B2FF9B
+country	Kenya	#ea7286
 country	Madagascar	#C2FFAB
 country	Malawi	#73AF61
 country	Mauritius	#83CF71
@@ -24,7 +24,7 @@ country	Mozambique	#93EF81
 country	Rwanda	#A3FF91
 country	Seychelles	#FF3333
 country	Somalia	#C3FFB1
-country	Tanzania	#74BF51
+country	Tanzania	#eab281
 country	Uganda	#84DF61
 country	Zambia	#94FF71
 country	Zimbabwe	#A4FF81
@@ -41,7 +41,7 @@ country	Cape Verde	#57AF5B
 country	Gambia	#67CF6B
 country	Ghana	#77EF7B
 country	Guinea Bissau	#97FF9B
-country	côte d'ivoire	#A7FFAB
+country	côte d'ivoire	#a9c484
 country	Liberia	#B7FFBB
 country	Mali	#C7FFCB
 country	Niger	#48AF4B
@@ -63,7 +63,7 @@ country	Latvia	#FF6969
 country	Lithuania	#FF5959
 country	Norway	#FF4949
 country	Sweden	#FF3939
-country	United Kingdom	#FF007F
+country	United Kingdom	#bfded8
 
 country	Albania	#FF7F4D
 country	Andorra	#FF6F4D
@@ -125,10 +125,10 @@ country	Nicaragua	#FFB23C
 country	Panama	#FFB33D
 country	Canada	#2DAEFD
 country	Mexico	#E2942B
-country	USA	#FFAA1D
+country	USA	#d6cec2
 
-country	China	#8E3CCB
-country	Hong Kong	#0E3A89
+country	China	#a3b2d2
+country	Hong Kong	#5d937b
 country	Japan	#660033
 country	Taiwan	#1E88E5
 country	Mongolia	#7AA7FF
@@ -152,10 +152,10 @@ country	Brunei	#1C0F52
 country	Cambodia	#3D2195
 country	Indonesia	#5A2FB5
 country	Laos	#753FCB
-country	Malaysia	#8145DF
+country	Malaysia	#f4a4bf
 country	Myanmar	#4C187E
 country	Philippines	#59199B
-country	Singapore	#6E1985
+country	Singapore	#a07ca7
 country	Thailand	#FF2222
 country	Timor-Leste	#AA23D1
 country	Vietnam	#D49064

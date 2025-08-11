@@ -20,7 +20,7 @@ def parse_args():
 def extract_protein(genbank_file, output_fasta, product_name, output_genbank):
     os.makedirs(os.path.dirname(output_fasta), exist_ok=True)  
     
-    if product_name.lower() == "whole_genome":
+    if product_name.lower() == "whole-genome":
         for record in SeqIO.parse(genbank_file, "genbank"):
             with open(output_fasta, "w") as output_handle:
                 output_handle.write(f">{record.id}\n{record.seq}\n")

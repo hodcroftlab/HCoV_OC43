@@ -22,6 +22,7 @@ KF572816
 OK245433
 OK500301
 PQ659995
+PQ659996 #nucleocapsid
 
 # from spike
 PQ630088 #spike 
@@ -34,3 +35,9 @@ PQ630073
 PQ630123
 PQ630077
 PQ630108
+KU745542
+KF923895
+
+#from whole -genome 
+
+PQ630083 #too many N

@@ -12,10 +12,10 @@
 configfile: "config/config.yaml"
 
 wildcard_constraints:
-    seg="spike|nucleocapsid|membrane|hemagglutinin-esterase|whole_genome"  
+    seg="spike|nucleocapsid|membrane|hemagglutinin-esterase|whole-genome"  
 
 # Define segments to analyze
-segments = ["spike", "nucleocapsid",  "membrane", "hemagglutinin-esterase", "whole_genome"] # This is only for the expand in rule all
+segments = ["spike", "nucleocapsid",  "membrane", "hemagglutinin-esterase", "whole-genome"] # This is only for the expand in rule all
 
 # Expand augur JSON paths
 rule all:
@@ -215,11 +215,14 @@ rule filter:
         exclude = files.dropped_strains
     output:
         sequences = "{seg}/results/filtered.fasta",
-        metadata = "{seg}/results/filtered_metadata.tsv"
+        metadata = "{seg}/results/filtered_metadata.tsv",
+        log = "{seg}/results/output_log.tsv"
     params:
         min_date = 1960, #Set to 1960, as this was when HCoV first discovered, but NL63 2004
         strain_id_field= "accession",
-        exclude = "'host!=Homo sapiens'"
+        exclude = "'host!=Homo sapiens'", 
+        min_length = lambda wildcards: {"spike": 2472, "nucleocapsid": 810, "membrane": 450, "hemagglutinin-esterase": 700, "whole-genome": 20000}[wildcards.seg],  # Min length 
+        max_length = lambda wildcards: {"spike": 4120, "nucleocapsid": 1450, "membrane": 750, "hemagglutinin-esterase": 1300,  "whole-genome": 30738}[wildcards.seg]  # Max length added 100 to actual length
     shell:
         """
         augur filter \
@@ -231,9 +234,13 @@ rule filter:
             --exclude-ambiguous-dates-by year \
             --output-sequences {output.sequences} \
             --output-metadata {output.metadata} \
+            --output-log {output.log} \
             --min-date {params.min_date} \
-            --exclude-where {params.exclude}
+            --exclude-where {params.exclude} \
+            --min-length {params.min_length} \
+            --max-length {params.max_length} \
             
+        
         """
 
 ###########################
@@ -316,8 +323,8 @@ rule refine:
         # clock_filter_iqd = 3, # set to 6 if you want more control over outliers
         # strain_id_field ="accession",
         # rooting = "best"
-        # clock_rate = 0.004, # remove for estimation by augur; check literature
-        # clock_std_dev = 0.0015
+        # clock_rate = 0.004, 
+        # clock_std_dev = 0.0015,
         coalescent = lambda wildcards: config[wildcards.seg]["augur_refine"]["coalescent"],
         date_inference = lambda wildcards: config[wildcards.seg]["augur_refine"]["date_inference"],
         clock_filter_iqd = lambda wildcards: config[wildcards.seg]["augur_refine"]["clock_filter_iqd"],
@@ -343,8 +350,10 @@ rule refine:
         """
 
 
-            # --clock-rate {params.clock_rate}\
+            # --clock-rate {params.clock_rate} \
             # --clock-std-dev {params.clock_std_dev} \
+
+            
 # ##############################
 # # Ancestral sequences and amino acids
 # ###############################

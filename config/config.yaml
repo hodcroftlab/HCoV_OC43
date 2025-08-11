@@ -57,7 +57,7 @@ hemagglutinin-esterase:
     strain_id_field: "accession"
     rooting: "best"
 
-whole_genome:
+whole-genome:
   blast_sort:
     min_length: 20000
     max_length: 30738
@@ -66,4 +66,4 @@ whole_genome:
     date_inference: "marginal"
     clock_filter_iqd: 3
     strain_id_field: "accession"
-    rooting: "mid_point"
+    rooting: "best"
