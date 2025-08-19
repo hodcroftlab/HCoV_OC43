@@ -105,7 +105,7 @@ rule extract:
         product_name = "{seg}"
     shell:
         """
-        python scripts/extract_gene_from_whole_genome.py \
+        python scripts/extract_gene_from_*genome.py \
         --genbank_file {input.genbank_file} \
         --output_fasta {output.extracted_fasta} \
         --product_name {params.product_name} \
@@ -422,23 +422,23 @@ rule traits:
 # ##############################
 # # Assign clades or subgenotypes based on list provided
 # ###############################
-# rule clades: 
-#     message: "Assigning clades according to nucleotide mutations"
-#     input:
-#         tree=rules.refine.output.tree,
-#         aa_muts = rules.translate.output.node_data,
-#         nuc_muts = rules.ancestral.output.node_data,
-#         clades = files.clades # TODO: assign mutations to specific clades
-#     output:
-#         clade_data = "{seg}/results/clades.json"
+rule clades: 
+    message: "Assigning clades according to nucleotide mutations"
+    input:
+        tree=rules.refine.output.tree,
+        aa_muts = rules.translate.output.node_data,
+        nuc_muts = rules.ancestral.output.node_data,
+        clades = files.clades # TODO: assign mutations to specific clades
+    output:
+        clade_data = "{seg}/results/clades.json"
 
-#     shell:
-#         """
-#         augur clades --tree {input.tree} \
-#             --mutations {input.nuc_muts} {input.aa_muts} \
-#             --clades {input.clades} \
-#             --output-node-data {output.clade_data}
-#         """
+    shell:
+        """
+        augur clades --tree {input.tree} \
+            --mutations {input.nuc_muts} {input.aa_muts} \
+            --clades {input.clades} \
+            --output-node-data {output.clade_data}
+        """
 
 # #########################
 # #  EXPORT
@@ -453,7 +453,7 @@ rule export:
         traits = rules.traits.output.node_data,
         nt_muts = rules.ancestral.output.node_data,
         aa_muts = rules.translate.output.node_data,
-        # clades = rules.clades.output.clade_data,
+        clades = rules.clades.output.clade_data, 
         colors = files.colors,
         lat_longs = files.lat_longs,
         auspice_config = files.auspice_config
@@ -470,7 +470,7 @@ rule export:
             --metadata {input.metadata} \
             --metadata-id-columns {params.strain_id_field} \
             --node-data {input.branch_lengths} {input.traits} {input.nt_muts} \
-                {input.aa_muts} \
+            {input.aa_muts} {input.clades} \
             --colors {input.colors} \
             --lat-longs {input.lat_longs} \
             --auspice-config {input.auspice_config} \
